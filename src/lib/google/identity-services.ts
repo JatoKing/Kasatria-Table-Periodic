@@ -1,8 +1,8 @@
 /**
  * Thin wrapper around Google Identity Services (GIS) for the OAuth 2.0 token flow.
  *
- * One pop-up both identifies the user and grants an access token for the Sheets API,
- * so the sign-in in this app is also what unlocks the data.
+ * One pop-up identifies the user and grants an access token for the basic profile scopes.
+ * /api/people checks that token before the server reads the sheet with its service account.
  */
 
 const GIS_SCRIPT_URL = 'https://accounts.google.com/gsi/client';
@@ -13,7 +13,6 @@ export type AuthErrorCode =
   | 'popup_closed'
   | 'popup_failed_to_open'
   | 'access_denied'
-  | 'scope_not_granted'
   | 'superseded'
   | 'unknown';
 
@@ -34,8 +33,6 @@ const AUTH_ERROR_MESSAGES: Record<AuthErrorCode, string | null> = {
   popup_failed_to_open:
     'The Google sign-in window was blocked. Allow pop-ups for this site, then sign in again.',
   access_denied: 'Access was not granted. Sign in again and allow access to continue.',
-  scope_not_granted:
-    'The people data is read from a Google Sheet. Sign in again and tick “See all your Google Sheets spreadsheets”.',
   unknown: 'Sign-in failed. Try again.',
 };
 
@@ -127,14 +124,6 @@ export class GoogleTokenClient {
     this.pending = null;
     pending?.reject(error);
   }
-}
-
-/** With granular consent, a user can untick individual scopes, so check before using the token. */
-export function hasGrantedScopes(
-  response: TokenResponse,
-  [firstScope, ...otherScopes]: readonly [string, ...string[]],
-): boolean {
-  return google.accounts.oauth2.hasGrantedAllScopes(response, firstScope, ...otherScopes);
 }
 
 /** Revokes the grant so the token can no longer be used. Errors are ignored: the session ends either way. */

@@ -1,6 +1,7 @@
 'use client';
 
 import 'lenis/dist/lenis.css';
+import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -31,17 +32,17 @@ const STEPS: { field: PassField; title: string; body: string }[] = [
   {
     field: 'holder',
     title: 'Google confirms who you are',
-    body: 'Your name, email and photo come from your Google account. Pick the account that can view the people spreadsheet.',
+    body: 'Your name, email and photo come from your Google account. Any Google account works.',
   },
   {
     field: 'access',
-    title: 'The sheet opens read-only',
-    body: 'The app asks for view-only access to Google Sheets and reads just the people sheet. It can’t change anything.',
+    title: 'The sheet stays private',
+    body: 'The app never asks for your Sheets, Drive or Gmail. Its server reads the people sheet with its own account.',
   },
   {
     field: 'validity',
-    title: 'Nothing is kept',
-    body: 'Your access lives only in this tab. Reload or close it and you’re signed out; the app saves nothing to the browser.',
+    title: 'Access ends with the tab',
+    body: 'Your access lives only in this tab. Reload or close it and you’re signed out. The server notes your email and the time when the data loads.',
   },
 ];
 
@@ -101,8 +102,8 @@ export function LoginScreen({ state, onSignIn }: LoginScreenProps) {
           <SplitText {...HEADLINE_PROPS} text="please sign in." />
         </p>
         <p className={styles.subtitle}>
-          Kasatria People Table shows everyone in the people spreadsheet. Sign in on the pass with a
-          Google account that can view the sheet.
+          Kasatria People Table shows everyone in the people spreadsheet. Sign in on the pass with any
+          Google account.
         </p>
       </section>
 
@@ -136,6 +137,9 @@ export function LoginScreen({ state, onSignIn }: LoginScreenProps) {
             </li>
           ))}
         </ol>
+        <p className={styles.privacy}>
+          <Link href="/privacy">Privacy policy</Link>
+        </p>
       </section>
 
       {/* On narrow screens the pass has scrolled away by now, so the button is repeated here. */}

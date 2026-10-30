@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import type { Session } from '@/components/auth/AuthProvider';
 import { usePeople } from '@/hooks/usePeople';
-import { SheetsApiError } from '@/lib/google/sheets-api';
 import type { LayoutName } from '@/lib/layouts/layouts';
+import { PeopleApiError } from '@/lib/people/people-service';
 import { LayoutControls } from './LayoutControls';
 import { NetWorthLegend } from './NetWorthLegend';
 import { PeopleScene3D } from './PeopleScene3D';
@@ -32,7 +32,7 @@ export function PeopleExplorer({ session, onSignOut }: PeopleExplorerProps) {
 
   // Retrying cannot fix an expired or revoked token, so go back to the sign-in screen instead.
   const sessionExpired =
-    state.status === 'error' && state.error instanceof SheetsApiError && state.error.status === 401;
+    state.status === 'error' && state.error instanceof PeopleApiError && state.error.status === 401;
 
   useEffect(() => {
     if (sessionExpired) onSignOut(SESSION_EXPIRED_MESSAGE);

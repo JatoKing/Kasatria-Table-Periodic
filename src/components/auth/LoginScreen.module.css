@@ -129,6 +129,21 @@
   color: var(--text-muted);
 }
 
+.privacy {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.privacy a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.privacy a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .closing {
   grid-area: closing;
   display: none;

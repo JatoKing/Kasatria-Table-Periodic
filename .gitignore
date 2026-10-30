@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# Google service account key (holds a private key: never commit it)
+own-project-513106-547d9181a098.json
+
 # vercel
 .vercel
 

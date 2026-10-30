@@ -1,0 +1,91 @@
+/* Same front-desk look as the login page: navy lobby, signage headings, safety-orange accents. */
+.page {
+  --lobby: #141c33;
+  --text: #eef1f7;
+  --text-muted: rgb(238 241 247 / 0.7);
+  --accent: #ff6b35;
+  --line: rgb(238 241 247 / 0.14);
+
+  min-height: 100dvh;
+  padding: clamp(40px, 8vw, 96px) clamp(20px, 6vw, 96px);
+  background:
+    radial-gradient(70% 50% at 80% 0%, #1f2b4f 0%, rgb(31 43 79 / 0) 70%),
+    var(--lobby);
+  color: var(--text);
+  font-family: var(--font-text), system-ui, sans-serif;
+}
+
+.content {
+  max-width: 64ch;
+}
+
+.brand {
+  margin: 0 0 12px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.updated {
+  margin: 14px 0 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.lead {
+  margin: 32px 0 0;
+  font-size: 1.1875rem;
+  line-height: 1.6;
+}
+
+.section {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.section p {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.heading {
+  margin: 0 0 10px;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.625rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.link,
+.back {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.link:focus-visible,
+.back:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.back {
+  display: inline-block;
+  margin-top: 48px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+}

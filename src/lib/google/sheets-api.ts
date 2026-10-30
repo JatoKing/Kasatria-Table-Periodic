@@ -1,4 +1,9 @@
+import 'server-only';
+
 const SHEETS_API_BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
+
+/** Read-only access to Google Sheets, requested for the service account. The app never writes to the sheet. */
+export const SHEETS_READONLY_SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
 export class SheetsApiError extends Error {
   constructor(
@@ -27,13 +32,14 @@ interface GoogleApiErrorBody {
 export interface FetchSheetValuesParams {
   spreadsheetId: string;
   range: string;
+  /** The service account's access token. */
   accessToken: string;
   signal?: AbortSignal;
 }
 
 /**
- * Reads a range with the signed-in user's access token. The spreadsheet stays private:
- * the request only succeeds for accounts the sheet is shared with.
+ * Reads a range with the service account's access token. The spreadsheet stays private:
+ * it is shared with the service account as Viewer, not with the people who sign in.
  *
  * UNFORMATTED_VALUE returns numbers as numbers (251260.8 rather than "$251,260.80").
  */
@@ -51,6 +57,7 @@ export async function fetchSheetValues({
 
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${accessToken}` },
+    cache: 'no-store',
     signal,
   });
 
@@ -62,6 +69,10 @@ export async function fetchSheetValues({
   return body.values ?? [];
 }
 
+/**
+ * Messages name the setting to fix. They reach signed-in users, so they never include the sheet ID
+ * or the service account's address.
+ */
 async function describeFailure(response: Response, range: string): Promise<string> {
   let apiMessage = '';
   let reasons: string[] = [];
@@ -75,16 +86,16 @@ async function describeFailure(response: Response, range: string): Promise<strin
 
   switch (response.status) {
     case 401:
-      return 'Your Google session expired. Sign in again.';
+      return 'Google Sheets did not accept the service account. Check GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY.';
     case 403:
       if (reasons.includes('SERVICE_DISABLED') || apiMessage.includes('has not been used')) {
         return 'The Google Sheets API is not enabled for this Google Cloud project.';
       }
-      return 'This Google account cannot open the spreadsheet. Ask the owner to share it with you.';
+      return 'The service account cannot open the spreadsheet. Share the sheet with the GOOGLE_SERVICE_ACCOUNT_EMAIL address as Viewer.';
     case 404:
-      return 'The spreadsheet was not found. Check NEXT_PUBLIC_SPREADSHEET_ID.';
+      return 'The spreadsheet was not found. Check SPREADSHEET_ID, and that the sheet is shared with the GOOGLE_SERVICE_ACCOUNT_EMAIL address as Viewer.';
     case 400:
-      return `The sheet range ${range} could not be read. Check the tab name in NEXT_PUBLIC_SHEET_RANGE.`;
+      return `The sheet range ${range} could not be read. Check the tab name in SHEET_RANGE.`;
     default:
       return apiMessage || `Google Sheets returned an error (HTTP ${response.status}).`;
   }

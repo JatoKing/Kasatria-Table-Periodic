@@ -10,12 +10,11 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { getAppConfig, GOOGLE_SCOPES, SHEETS_READONLY_SCOPE } from '@/config/app-config';
+import { getAppConfig, GOOGLE_SCOPES } from '@/config/app-config';
 import {
   AuthError,
   describeAuthError,
   GoogleTokenClient,
-  hasGrantedScopes,
   loadGoogleIdentityServices,
   revokeAccessToken,
 } from '@/lib/google/identity-services';
@@ -91,11 +90,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     client
       .requestAccessToken()
       .then(async (token) => {
-        if (!hasGrantedScopes(token, [SHEETS_READONLY_SCOPE])) {
-          revokeAccessToken(token.access_token);
-          throw new AuthError('scope_not_granted');
-        }
-
         const user = await fetchGoogleUser(token.access_token);
         accessTokenRef.current = token.access_token;
         setState({
