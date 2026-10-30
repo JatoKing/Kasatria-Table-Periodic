@@ -1,0 +1,55 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.panel {
+  max-width: 440px;
+  text-align: center;
+  color: rgb(127 255 255 / 0.85);
+}
+
+.panel[data-tone='error'] {
+  color: #fff;
+}
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.body {
+  margin-top: 10px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.75);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.actions button {
+  padding: 6px 14px;
+  border: 1px solid rgb(127 255 255 / 0.75);
+  background-color: transparent;
+  color: rgb(127 255 255 / 0.9);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: rgb(0 255 255 / 0.3);
+}
+
+.actions button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}

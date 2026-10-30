@@ -1,0 +1,64 @@
+/* Added to <html> while the custom cursor is mounted. !important beats component rules like button { cursor: pointer }. */
+.hideNativeCursor,
+.hideNativeCursor * {
+  cursor: none !important;
+}
+
+.dot,
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  translate: -50% -50%;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ff6b35;
+  transition: scale 200ms ease;
+}
+
+/* The ring's label sits where the dot would be. */
+.ring[data-mode='drag'] + .dot {
+  scale: 0;
+}
+
+.ring {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid rgb(238 241 247 / 0.55);
+  border-radius: 17px;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.ring[data-mode='frame'] {
+  border-color: #ff6b35;
+}
+
+.ring[data-mode='drag'] {
+  border-color: #ff6b35;
+  background-color: rgb(255 107 53 / 0.14);
+}
+
+.label {
+  font-family: var(--font-text), system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #141a2e;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.ring[data-mode='drag'] .label {
+  opacity: 1;
+}

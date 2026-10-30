@@ -1,0 +1,217 @@
+.stage {
+  --strap-colour: #ff6b35;
+  --pass: #f5f7fa;
+  --pass-ink: #141a2e;
+  --pass-muted: #5b6478;
+  --card-width: clamp(240px, min(24vw, 44vh), 300px);
+  --strap-length: clamp(72px, 24vh, 280px);
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* Strap, clasp and card turn together around the top of the strap. */
+.rig {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--card-width);
+  margin-top: -40px;
+  transform-origin: 50% 0;
+}
+
+/*
+ * Starting pose for the entrance swing (ENTRANCE_ANGLE in VisitorPass.tsx): held up on the left,
+ * mostly above the screen. It applies from the first paint, before the script takes over, so the
+ * pass never flashes in the middle first.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .rig {
+    rotate: 100deg;
+  }
+}
+
+.strap {
+  width: 26px;
+  height: calc(var(--strap-length) + 40px);
+  overflow: hidden;
+  border-inline: 2px solid rgb(0 0 0 / 0.18);
+  background-color: var(--strap-colour);
+  color: var(--pass-ink);
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: pre;
+  writing-mode: vertical-rl;
+}
+
+/* Sits above the card and hooks into its slot. */
+.clasp {
+  position: relative;
+  z-index: 1;
+  width: 20px;
+  height: 30px;
+  margin: -4px 0 -16px;
+  border-radius: 5px 5px 8px 8px;
+  background: linear-gradient(90deg, #8c94a3, #e6e9ef 45%, #a3aab6);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.35);
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  padding: 26px 20px 20px;
+  border-radius: 16px;
+  background-color: var(--pass);
+  box-shadow:
+    0 40px 60px -30px rgb(0 0 0 / 0.7),
+    0 12px 24px -12px rgb(0 0 0 / 0.5);
+  color: var(--pass-ink);
+  font-family: var(--font-text), system-ui, sans-serif;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.card[data-dragging] {
+  cursor: grabbing;
+}
+
+/* The punched hole: page colour showing through the card. */
+.slot {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 44px;
+  height: 9px;
+  margin-left: -22px;
+  border-radius: 5px;
+  background-color: var(--lobby, #141c33);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.5);
+}
+
+.issuer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.wordmark {
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.product {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--pass-muted);
+}
+
+/* Printed like a real pass, hence the capitals. */
+.band {
+  margin: 14px -20px 18px;
+  padding: 6px 20px 4px;
+  background-color: var(--strap-colour);
+  font-family: var(--font-display), sans-serif;
+  font-size: 2.75rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 28% minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.photo {
+  aspect-ratio: 84 / 104;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #e2e6ee;
+}
+
+.photo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: #c2c9d6;
+}
+
+.fields {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.field {
+  margin: -3px -6px;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+.field dt {
+  font-size: 0.6875rem;
+  color: var(--pass-muted);
+}
+
+.field dd {
+  margin: 1px 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.field .blank {
+  font-weight: 400;
+  color: var(--pass-muted);
+  text-decoration: underline dashed;
+  text-underline-offset: 3px;
+}
+
+.photo,
+.field {
+  transition:
+    background-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.photo[data-active='true'],
+.field[data-active='true'] {
+  background-color: rgb(255 107 53 / 0.16);
+  box-shadow: inset 0 0 0 1.5px var(--strap-colour);
+}
+
+.signIn {
+  margin-top: 20px;
+}
+
+.signIn button {
+  justify-content: center;
+  width: 100%;
+}
+
+.message {
+  margin: 12px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #b42318;
+}
+
+@media (max-width: 820px) {
+  .stage {
+    --card-width: min(300px, 80vw);
+    --strap-length: 56px;
+  }
+}

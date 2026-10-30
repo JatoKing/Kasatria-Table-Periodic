@@ -1,0 +1,65 @@
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: #000;
+  color: #fff;
+}
+
+.topBar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+}
+
+/* Clicks on the empty parts of the bar fall through to the 3D scene underneath. */
+.bottomBar {
+  position: absolute;
+  right: 16px;
+  bottom: 20px;
+  left: 16px;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.bottomBar > * {
+  pointer-events: auto;
+}
+
+.notice {
+  justify-self: start;
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgb(127 255 255 / 0.6);
+}
+
+.controls {
+  justify-self: center;
+}
+
+.legend {
+  justify-self: end;
+}
+
+@media (max-width: 860px) {
+  .bottomBar {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 10px;
+  }
+
+  .notice,
+  .controls,
+  .legend {
+    justify-self: center;
+  }
+
+  .notice {
+    order: 3;
+  }
+}
