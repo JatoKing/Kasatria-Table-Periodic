@@ -37,6 +37,7 @@ Server: /api/people
 Browser
     → createLayoutTargets()    Person count → target positions for 4 layouts
     → PeopleScene              CSS3DRenderer + TrackballControls + tween.js
+    → click a tile             it flies out of the layout to the camera, enlarged; the next click or Escape puts it back
 ```
 
 The sign-in asks only for the basic profile, so the OAuth app can be published for any Google account without Google's verification. The sheet ID and the service account credentials are server-only environment variables: they never use the `NEXT_PUBLIC_` prefix, and the modules that read them import `server-only`, so importing them from client code fails the build.

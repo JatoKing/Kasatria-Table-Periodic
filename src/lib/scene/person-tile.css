@@ -20,13 +20,26 @@
   font-family: Helvetica, Arial, sans-serif;
   line-height: normal;
   text-align: center;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
+  transition: opacity 0.4s ease;
 }
 
-.person-tile:hover {
+.person-tile:hover,
+.person-tile--focused {
   border-color: rgb(var(--tile-rgb) / 0.95);
   box-shadow: 0 0 18px rgb(var(--tile-rgb) / 0.85);
+}
+
+/* A clicked tile, brought up close by PeopleScene. Opaque, so the tiles behind do not show through. */
+.person-tile--focused {
+  background-color: rgb(0 0 0 / 0.85);
+  background-image: linear-gradient(rgb(var(--tile-rgb) / 0.2), rgb(var(--tile-rgb) / 0.2));
+}
+
+/* PeopleScene sets data-tile-focused on its container while a tile is up close. */
+[data-tile-focused] .person-tile:not(.person-tile--focused) {
+  opacity: 0.2;
 }
 
 .person-tile__meta {
