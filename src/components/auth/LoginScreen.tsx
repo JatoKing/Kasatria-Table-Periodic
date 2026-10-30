@@ -61,10 +61,11 @@ const HEADLINE_PROPS = {
  * walks through what signing in does, and the pass highlights the field each step is about.
  */
 export function LoginScreen({ state, onSignIn }: LoginScreenProps) {
+  const stepsSectionRef = useRef<HTMLElement>(null);
   const stepsRef = useRef<HTMLOListElement>(null);
   const [activeField, setActiveField] = useState<PassField | null>(null);
 
-  useSmoothScroll();
+  const scrollTo = useSmoothScroll();
 
   useGSAP(
     () => {
@@ -105,6 +106,18 @@ export function LoginScreen({ state, onSignIn }: LoginScreenProps) {
           Kasatria People Table shows everyone in the people spreadsheet. Sign in on the pass with any
           Google account.
         </p>
+        <button
+          type="button"
+          className={styles.scrollCue}
+          onClick={() => stepsSectionRef.current && scrollTo(stepsSectionRef.current)}
+        >
+          <span className={styles.scrollArrow} aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" />
+            </svg>
+          </span>
+          What signing in does
+        </button>
       </section>
 
       <div className={styles.pass}>
@@ -117,7 +130,7 @@ export function LoginScreen({ state, onSignIn }: LoginScreenProps) {
         />
       </div>
 
-      <section className={styles.steps} aria-labelledby="steps-title">
+      <section ref={stepsSectionRef} className={styles.steps} aria-labelledby="steps-title">
         <h2 id="steps-title" className={styles.stepsTitle}>
           What signing in does
         </h2>

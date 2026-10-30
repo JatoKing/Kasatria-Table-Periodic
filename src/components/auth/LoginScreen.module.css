@@ -16,6 +16,12 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   column-gap: clamp(24px, 4vw, 64px);
   padding-inline: clamp(24px, 6vw, 96px) clamp(0px, 2vw, 32px);
+  /*
+   * The swinging pass can reach past the right edge. Without this the page grows sideways, and phones
+   * zoom out to fit it, which also shortens how far the page can scroll. `clip` (not `hidden`) keeps
+   * the sticky pass working.
+   */
+  overflow-x: clip;
   background:
     radial-gradient(70% 60% at 78% 18%, #1f2b4f 0%, rgb(31 43 79 / 0) 70%) fixed,
     var(--lobby);
@@ -24,12 +30,81 @@
 }
 
 .hero {
+  position: relative;
   grid-area: hero;
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100svh;
   padding-block: 64px;
+}
+
+/* Sits at the foot of the first screen and scrolls down to the steps. */
+.scrollCue {
+  position: absolute;
+  bottom: clamp(24px, 6vh, 56px);
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px 0 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.scrollCue:hover {
+  color: var(--text);
+}
+
+.scrollCue:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.scrollArrow {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid rgb(238 241 247 / 0.35);
+  border-radius: 50%;
+  color: var(--accent);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+.scrollCue:hover .scrollArrow {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: var(--lobby);
+}
+
+.scrollArrow svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: nudge 1.8s ease-in-out infinite;
+}
+
+/* A small downward nudge; globals.css switches animations off for reduced motion. */
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+
+  50% {
+    transform: translateY(3px);
+  }
 }
 
 /* Flex turns each SplitText line (inline-block) into its own row. */
@@ -168,6 +243,12 @@
   .hero {
     min-height: auto;
     padding-block: 40px 24px;
+  }
+
+  .scrollCue {
+    position: static;
+    align-self: flex-start;
+    margin-top: 28px;
   }
 
   .headline {

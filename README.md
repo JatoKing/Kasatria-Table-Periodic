@@ -78,7 +78,7 @@ The login page has its own look, separate from the 3D view: a front desk where a
 - **The pass** (`VisitorPass`) swings in from the left on load, across to the right, and settles into a small swing around the centre. It keeps swinging until the pointer (or keyboard focus) rests on it, so the button holds still to be clicked, and starts again once the pointer leaves. It can be dragged by the card and sways as the page scrolls. The swing is a damped pendulum (`src/lib/motion/pendulum.ts`) stepped on GSAP's ticker.
 - **The pass states facts about sign-in:** name and photo come from the Google account, access is view only, and it is valid for this tab only. The steps under the headline explain each one, and GSAP ScrollTrigger highlights the matching field on the pass as each step scrolls into view. A link to the privacy policy follows the steps.
 - **Headline:** "Visitors, please sign in." revealed letter by letter with React Bits' SplitText.
-- **Scrolling** is smoothed by Lenis, driven from GSAP's ticker so ScrollTrigger and Lenis update on the same frame.
+- **Scrolling** is smoothed by Lenis, driven from GSAP's ticker so ScrollTrigger and Lenis update on the same frame. A round arrow at the foot of the first screen ("What signing in does") scrolls down to the steps through Lenis; its nudge animation stops with reduced motion.
 - **Cursor** (`CustomCursor`): a dot and a trailing ring. The ring outlines buttons and says "Drag" over the pass. Mouse and pen only; touch screens keep the default.
 - **Type and colour:** Big Shoulders for signage and the pass, Instrument Sans for text (both via `next/font`), on navy with a safety-orange lanyard. The `/privacy` page uses the same look.
 
